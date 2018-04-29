@@ -3,6 +3,7 @@ package evaluator.controller;
 import java.util.LinkedList;
 import java.util.List;
 
+import evaluator.exception.InputValidationFailedException;
 import evaluator.model.Intrebare;
 import evaluator.model.Statistica;
 import evaluator.model.Test;
@@ -25,37 +26,45 @@ public class AppController {
 		
 		return intrebare;
 	}
-	
+	public void loadTest2() throws InputValidationFailedException , DuplicateIntrebareException{
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+2?","1)4","2)5","1","Matematica"));
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+3?","1)5","2)2","1","Matematica"));
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+4?","1)6","2)3","1","Matematica"));
+
+	}
+	public void loadTest3() throws InputValidationFailedException , DuplicateIntrebareException{
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+2?","1)4","2)5","1","Maatematica"));
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+3?","1)5","2)2","1","Mmatematica"));
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+4?","1)6","2)3","1","Tematica"));
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+5?","1)7","2)5","1","Atematic"));
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+6?","1)8","2)5","1","Adunare"));
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+7?","1)9","2)5","1","Socoteala"));
+		intrebariRepository.addIntrebare(new Intrebare("Cat face 2+8?","1)10","2)5","1","Aritmetica"));
+	}
+
+
 	public boolean exists(Intrebare intrebare){
 		return intrebariRepository.exists(intrebare);
 	}
 	
 	public Test createNewTest() throws NotAbleToCreateTestException{
-		
 		if(intrebariRepository.getIntrebari().size() < 3)
 			throw new NotAbleToCreateTestException("Nu exista suficiente intrebari pentru crearea unui test!(5)");
-		
 		if(intrebariRepository.getNumberOfDistinctDomains() < 4)
 			throw new NotAbleToCreateTestException("Nu exista suficiente domenii pentru crearea unui test!(5)");
-		
 		List<Intrebare> testIntrebari = new LinkedList<Intrebare>();
 		List<String> domenii = new LinkedList<String>();
 		Intrebare intrebare;
 		Test test = new Test();
-		
 		while(testIntrebari.size() != 7){
 			intrebare = intrebariRepository.pickRandomIntrebare();
-			
-			if(testIntrebari.contains(intrebare) && !domenii.contains(intrebare.getDomeniu())){
+			if(!testIntrebari.contains(intrebare) && !domenii.contains(intrebare.getDomeniu())){
 				testIntrebari.add(intrebare);
 				domenii.add(intrebare.getDomeniu());
 			}
-			
 		}
-		
 		test.setIntrebari(testIntrebari);
 		return test;
-		
 	}
 	
 	public void loadIntrebariFromFile(String f){

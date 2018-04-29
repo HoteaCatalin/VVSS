@@ -79,7 +79,7 @@ public class IntrebariRepository {
 			line = br.readLine();
 			while(line != null){
 				intrebareAux = new LinkedList<String>();
-				while(!line.equals("##")){
+				while(!line.equals(",")){
 					intrebareAux.add(line);
 					line = br.readLine();
 				}
